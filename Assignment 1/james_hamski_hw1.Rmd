@@ -8,23 +8,26 @@ output: html_document
 # Page 8: #10
 Your grandparents have an annuity. The value of the annuity increases each month by an automatic deposit of 1% interest on the previous month's balance. Your grandparents withdraw $1000 at the beginning of each month for living expenses. Currently, they have $50,000 in the annuity. Model the annuity with a dynamical system. Will the annuity run out of money? When? Hint: What value will $a_{n}$ have when the annuity is depleted?
 
-$a_{n} = a_{n-1} + 0.01a_{n-1} - 1000$
+$a_{n} = a_{n-1} + 0.01a_{n-1} - 1000$  
 $a_{n+1} = a_{n} + 0.01a_{n} - 1000$
 
 ```{r}
 steps=100
 n_0=50000
+withdrawl=1000
 percent_return=1
 
-annuity<-function(x){x+(percent_return/100)*x-1000}
+annuity<-function(x){x+(percent_return/100)*x-withdrawl}
 
 remaining.annuity<-n_0
 
 for(i in 1:steps){
   n=annuity(remaining.annuity[i])
-  remaining.annuity=c(remaining.annuity,n)
-  }
-remaining.annuity=remaining.annuity[which(remaining.annuity>0)]
+  remaining.annuity<-c(remaining.annuity,n)
+}
+#could rewrite with while
+
+remaining.annuity<-remaining.annuity[which(remaining.annuity>0)]
 plot(remaining.annuity, ylim=c(0,n_0+10000),yaxs="i")
 
 which.min(remaining.annuity)
@@ -36,7 +39,22 @@ which.min(remaining.annuity)
 The data in the accompanying table show the speed n (in increments of 5 mph) of an automobile and the associated distance $a_{n}$ in feet required to stop it once the brakes are applied. For instance, n=6 (representing 6 x 5 = 30 mph) requires a stopping distance of $a_{6} = 47 ft$.
 a. Calculate and plot the change $\Delta a_{n}$ versus n. Does the graph reasonably approximate a linear relationship?
 b. Based on your conclusions in part (a), find a difference equation model for the stopping distance data. Test your model by plotting the errors in the predicted values against n. Discuss the appropriateness of the model.
-| n       | 1 | 2 | 3  | 4  | 5  | 6  | 7  | 8  | 9   | 10  | 11  | 12  | 13  | 14  | 15  | 16  || ------- | --- | --- | --- | --- | --- | --- | --- |--- | --- | --- | --- | --- | --- | --- | --- | --- || $a_{n}$ | 3 | 6 | 11 | 21 | 32 | 47 | 65 | 87 | 112 | 140 | 171 | 204 | 241 | 282 | 325 | 376 |
+
+```{r}
+n=seq(1,16,1)
+a_n=c(3,6,11,21,32,47,65,87,112,140,171,204,241,282,325,376)
+
+delta_a<-diff(a_n)
+
+plot(x=n[2:16], y=delta_a)
+```
+
+
+```{r}
+braking.model <- lm(n[2:16] ~ delta_a)
+print(braking.model)
+```
+
 
 # Page 34: #13
 Consider the spreading of a rumor through a company of 1000 employees, all working in the same building. We assume that the spreading of a rumor is similar to the spreading of a contagious disease (see Example 3, Section 1.2) in that the number of people hearing the rumor each day is proportional to the product of the number who have heard the rumor previously and the number who have not heard the rumor. This is given by
