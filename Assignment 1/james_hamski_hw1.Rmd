@@ -12,23 +12,23 @@ $a_{n} = a_{n-1} + 0.01a_{n-1} - 1000$
 $a_{n+1} = a_{n} + 0.01a_{n} - 1000$
 
 ```{r}
-steps=100
-n_0=50000
-withdrawl=1000
-percent_return=1
+steps = 100
+n_0 = 50000
+withdrawl = 1000
+percent_return = 1
 
-annuity<-function(x){x+(percent_return/100)*x-withdrawl}
+annuity <- function(x){x + (percent_return/100)*x - withdrawl}
 
-remaining.annuity<-n_0
+remaining.annuity <- n_0
 
-for(i in 1:steps){
-  n=annuity(remaining.annuity[i])
-  remaining.annuity<-c(remaining.annuity,n)
+for (i in 1:steps) { 
+  n = annuity(remaining.annuity[i])
+  remaining.annuity <- c(remaining.annuity,n)
 }
 #could rewrite with while
 
-remaining.annuity<-remaining.annuity[which(remaining.annuity>0)]
-plot(remaining.annuity, ylim=c(0,n_0+10000),yaxs="i")
+remaining.annuity <- remaining.annuity[which(remaining.annuity > 0)]
+plot(remaining.annuity, ylim = c(0, n_0 + 10000),yaxs = "i")
 
 which.min(remaining.annuity)
 ```
@@ -41,20 +41,45 @@ a. Calculate and plot the change $\Delta a_{n}$ versus n. Does the graph reasona
 b. Based on your conclusions in part (a), find a difference equation model for the stopping distance data. Test your model by plotting the errors in the predicted values against n. Discuss the appropriateness of the model.
 
 ```{r}
-n=seq(1,16,1)
-a_n=c(3,6,11,21,32,47,65,87,112,140,171,204,241,282,325,376)
+n = seq(1,16,1)*5
+a_n = c(3,6,11,21,32,47,65,87,112,140,171,204,241,282,325,376)
 
-delta_a<-diff(a_n)
+delta_a <- diff(a_n)
+plot(x = n, y = a_n)
+```
 
-plot(x=n[2:16], y=delta_a)
+```{r}
+plot(x = n[2:16], y = delta_a)
 ```
 
 
 ```{r}
-braking.model <- lm(n[2:16] ~ delta_a)
-print(braking.model)
+braking.model <- lm(delta_a ~ n[2:16] )
+
+plot(x = n[2:16], y = delta_a)
+abline(braking.model)
 ```
 
+```{r}
+k <- as.numeric(braking.model$coefficients[2])
+print(k)
+```
+
+Model:
+$\Delta a_{n} = 3.246n$
+
+Predicted stopping distances:
+```{r}
+
+a_n.model <- 3
+
+for (i in n) {
+  a_n.iter <- a_n.model[i]*k
+  a_n.distance <- a_n.model[i] + a_n.iter
+  a_n.model <- c(a_n.model, a_n.distance)
+}
+
+```
 
 # Page 34: #13
 Consider the spreading of a rumor through a company of 1000 employees, all working in the same building. We assume that the spreading of a rumor is similar to the spreading of a contagious disease (see Example 3, Section 1.2) in that the number of people hearing the rumor each day is proportional to the product of the number who have heard the rumor previously and the number who have not heard the rumor. This is given by
