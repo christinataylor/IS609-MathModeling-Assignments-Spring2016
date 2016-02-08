@@ -12,7 +12,7 @@ $a_{n} = a_{n-1} + 0.01a_{n-1} - 1000$
 $a_{n+1} = a_{n} + 0.01a_{n} - 1000$
 
 ```{r}
-steps = 100
+steps = 100 
 n_0 = 50000
 withdrawl = 1000
 percent_return = 1
@@ -25,14 +25,19 @@ for (i in 1:steps) {
   n = annuity(remaining.annuity[i])
   remaining.annuity <- c(remaining.annuity,n)}
 
-#could rewrite with while loop instead
-
 remaining.annuity <- remaining.annuity[which(remaining.annuity > 0)]
 plot(remaining.annuity, ylim = c(0, n_0 + 10000),yaxs = "i")
 
 which.min(remaining.annuity)
 ```
 
+*Note: I could rewrite this solution using a 'where' loop as I do in the third problem. This would eliminate the need to guess at the number of steps that need to be computed and would ensure only positive values for remaining.annuity.*
+
+Checking my work analytically:
+
+$a_{70} = (1.01)^{70}c+100,000$  
+$2.0c=100,000$  
+$c=50,000$  
 
 
 # Page 17: #9
@@ -52,7 +57,7 @@ The change in braking distance at different speeds is well approximated by a lin
 ```{r}
 braking.model <- lm(delta_a ~ n[2:16] )
 
-plot(x = n[2:16], y = delta_a, xlab='Speed', ylab='Change in Braking Distance')
+plot(x = n[2:16], y = delta_a, xlab = 'Speed', ylab = 'Change in Braking Distance')
 abline(braking.model)
 ```
 
@@ -78,6 +83,13 @@ for (i in 2:length(a_n)) {
 
 ```
 
+The model error increases as speed increases. 
+```{r}
+residuals <- abs(a_n - model.result)
+plot(residuals)
+```
+
+
 # Page 34: #13
 Consider the spreading of a rumor through a company of 1000 employees, all working in the same building. We assume that the spreading of a rumor is similar to the spreading of a contagious disease (see Example 3, Section 1.2) in that the number of people hearing the rumor each day is proportional to the product of the number who have heard the rumor previously and the number who have not heard the rumor. This is given by
 $r_{n+ 1} = r_{n} + kr_{n} (1000 - n )$
@@ -97,16 +109,92 @@ while (heard < total.population) {
   heard <- heard + (k * heard * (1000 - n))  
   n <- n + 1}
 ```
-How soon will all 1000 employees have heard the rumor? Days:
+How soon will all 1000 employees have heard the rumor? In days:
 ```{r}
-print(n)
+n
 ```
 
 
 # Page 55: #6
-An economist is interested in the variation of the price of a single product. It is observed that a high price for the product in the market attracts more suppliers. However, increasing the quantity of the product supplied tends to drive the price down. Over time, there is an interaction between price and supply. The economist has proposed the following model, where $P_{n}$ represents the price of the product at year n, and $Q_{n}$ represents the quantity. Find the equilibrium values for this system.
-$P_{n+1} = P_{n} - 0.1(Q_{n}-500)$
-$Q_{n+1} = Q_{n} + 0.2(P_{n}-100)$
+An economist is interested in the variation of the price of a single product. It is observed that a high price for the product in the market attracts more suppliers. However, increasing the quantity of the product supplied tends to drive the price down. Over time, there is an interaction between price and supply. The economist has proposed the following model, where $P_{n}$ represents the price of the product at year n, and $Q_{n}$ represents the quantity. Find the equilibrium values for this system.  
+$P_{n+1} = P_{n} - 0.1(Q_{n}-500)$  
+$Q_{n+1} = Q_{n} + 0.2(P_{n}-100)$  
+
 a. Does the model make sense intuitively? What is the significance of the constants 100 and 500? Explain the significance of the signs of the constants -0.1 and 0.2.
+
+P = 100 and Q = 500 are the equilibrium values. 
+
+The constants 100 and 500 represent the prices/quantities where the buyers and producers get least sensitive to price and quantities (hence equilibrium at these values). (-0.1) and 0.2 represent the reaction of the buyers / producers to changes in the price / quantities. 
+
+```{r}
+# set parameters
+iter = 250
+k.price = 0.1
+k.quant = 0.2
+equ.price = 500
+equ.quant = 100
+
+# model
+price <- function(P_n, Q_n) {
+  price.calc <- P_n - (k.price * (Q_n - equ.price))
+  return(price.calc)}
+
+quantity <- function(P_n, Q_n) {
+  quantity.calc <- Q_n + (k.quant * (P_n - equ.quant))
+  return(quantity.calc)}
+
+model.call <- function(P_n1, Q_n1){
+    P_n <- c()
+    P_n[1] <- P_n1
+    
+    Q_n <- c()
+    Q_n[1] <- Q_n1
+      for (i in 1:iter) {
+        P_n[i + 1] <- price(P_n[i], Q_n[i])
+        Q_n[i + 1] <- quantity(P_n[i], Q_n[i])
+    }
+  sim <- seq(1,iter + 1)
+  econ.model <- as.data.frame(cbind(P_n, Q_n, sim))
+  return(econ.model)
+  }
+```
+
+
 b. Test the initial conditions in the following table and predict the long-term behavior.
-|               | Price         | Quantity  || ------------- |:-------------:| -----:|| Case A | 100 | 500 || Case B | 200 | 500 || Case C | 100 | 600 || Case D | 100 | 400 |
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+case.A <- model.call(100, 500)
+
+ggplot(case.A, aes(sim)) + 
+  geom_line(aes(y = P_n, colour = "Price")) + 
+  geom_line(aes(y = Q_n, colour = "Quantity"))
+```
+
+```{r}
+case.B <- model.call(200, 600)
+
+ggplot(case.B, aes(sim)) + 
+  geom_line(aes(y = P_n, colour = "Price")) + 
+  geom_line(aes(y = Q_n, colour = "Quantity"))
+```
+
+```{r}
+case.C <- model.call(100, 600)
+
+ggplot(case.C, aes(sim)) + 
+  geom_line(aes(y = P_n, colour = "Price")) + 
+  geom_line(aes(y = Q_n, colour = "Quantity"))
+```
+
+```{r}
+case.D <- model.call(100, 400)
+
+ggplot(case.D, aes(sim)) + 
+  geom_line(aes(y = P_n, colour = "Price")) + 
+  geom_line(aes(y = Q_n, colour = "Quantity"))
+```
+
