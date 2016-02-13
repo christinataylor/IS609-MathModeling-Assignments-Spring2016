@@ -45,10 +45,52 @@ ggplot(modelset.2, aes(x)) +
 
 3.
 
+*Lumber Cutters* Using diameter of tree in inches at waist height, develop a model that predicts board feet of lumber produced by that tree as a function of diameter in inches. 
+
+```{r}
+#radius of a pine tree in inches
+x <- c(17, 19, 20, 23, 25, 28, 32, 38, 39, 41)/2
+
+#board feet divided by 10
+y <- c( 19, 25, 32, 57, 71, 113, 123, 252, 259, 294) * 10
+```
+
+Consider two separate assumptions allowing each to lead to a model. 
+
+i. Assume that all trees are right-circular cylinders and are approximately the same height. 
+
+When creating lumbar boards from a tree, you can increase the foot-length produced two ways - by having longer trees and having wider trees that allow more rectangular boards to fit within a circular cross-section of the tree. Therefore, we can hypothesize that board-feet is proportional to volume: $V = \pi r^2 h$.  
+
+In this case, we assume that all the trees are the same height and set h = 1. The resulting model is $V = k\pi(r)^2 = k(r)^2$.
+
+According to Wikipedia a board foot of lumber has a volume of $144 in^3$.
+
+```{r}
+y.vol <- y*144
+r.sqrd <- x**2
+
+k <- y.vol[10] / r.sqrd[10]
+
+
+```
+
+
+
+
+ii. Assume that all trees are right-circular cylinders and that the height of the tree is proportional to the diameter. 
+
+```{r}
+
+
+
+```
+
 
 
 4.
+*Discuss several factors we completely ignored in our anlaysis of the gasoline milage problem.*
 
 
+5. 
 
-5
+**
