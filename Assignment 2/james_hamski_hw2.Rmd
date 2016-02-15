@@ -8,7 +8,19 @@ output: html_document
 1. Page 69, #12
 *A company with a fleet of trucks faces increasing maintenance costs as the age and milage of the trucks increase.*
 
+Variables to study:
+*truck make / model
+*truck use
 
+Neglect:
+*routes
+*drivers 
+
+Constants:
+
+Data to collect
+*maintenance logs per truck
+*financal analysis of 
 
 
 2.
@@ -18,7 +30,12 @@ $y \propto x^3$
 ```{r}
 y <- c(0,1,2,6,14,24,37,58,82,114)
 x <- 1:10
-y.model <- x^3
+x.model <- x^3
+
+k = median(y/x.model)
+# I also tried the mean, median results in a better fit. 
+
+y.model <- k *x.model 
 
 modelset <- as.data.frame(cbind(x, y, y.model))
 
@@ -28,20 +45,8 @@ ggplot(modelset, aes(x)) +
   geom_line(aes(y = y.model, colour = "Stated Proportion")) + 
   geom_line(aes(y = y, colour = "Actual Data"))
 ```
- 
-The dataset does support the stated proportionality model. It looks better as $y \propto x^3$
 
-```{r}
-y <- c(0,1,2,6,14,24,37,58,82,114)
-x <- 1:10
-y.model <- x^2
-
-modelset.2 <- as.data.frame(cbind(x, y, y.model))
-
-ggplot(modelset.2, aes(x)) + 
-  geom_line(aes(y = y.model, colour = "Cubic Proportionality")) + 
-  geom_line(aes(y = y, colour = "Actual Data"))
-```
+The dataset supports the proportionality. 
 
 3.
 
@@ -69,28 +74,47 @@ According to Wikipedia a board foot of lumber has a volume of $144 in^3$.
 y.vol <- y*144
 r.sqrd <- x**2
 
-k <- y.vol[10] / r.sqrd[10]
+k <- median(y.vol / r.sqrd)
 
+vol.model <- k * r.sqrd / 144
 
+model.equal.length <- as.data.frame(cbind(y, x, vol.model))
+
+ggplot(model.equal.length, aes(x)) + 
+  geom_point(aes(y = y, colour = "")) + 
+  geom_line(aes(y = vol.model, colour = "Model"))
 ```
-
-
 
 
 ii. Assume that all trees are right-circular cylinders and that the height of the tree is proportional to the diameter. 
 
 ```{r}
+y.vol <- y*144
+r.sqrd <- x**3
 
+k <- median(y.vol / r.sqrd)
 
+vol.model <- k * r.sqrd / 144
 
+model.equal.length <- as.data.frame(cbind(y, x, vol.model))
+
+ggplot(model.equal.length, aes(x)) + 
+  geom_point(aes(y = y, colour = "")) + 
+  geom_line(aes(y = vol.model, colour = "Model"))
 ```
-
-
 
 4.
 *Discuss several factors we completely ignored in our anlaysis of the gasoline milage problem.*
 
+Intermittent factors effect gas milage and are particularly tough to model. Headwind/tailwind and topography can increase or decrease gas milage depending on their configuration. So, your milage on the drive into the mountains may be worse than your drive back home. 
+
+Vehicle weight can have an effect since F=ma, increasing the mass of the car means increasing the amount of force it takes to move it. 
+
+One very interesting factor to me is summer versus winter fuel blend. Every spring the price of gasoline jumps as refineries switch over to the more expensive summer blend (I've actually done the seasonal decomposition to prove it!). The summmer blend has a higher evaporation point but it contains 1.7% more energy per gallon than the winter blend, meaning all else equal your gas milage will be better in the summer.  
+
+See:
+http://newsroom.aaa.com/2013/06/what-is-the-difference-between-summer-and-winter-blend-gasoline/
 
 5. 
 
-**
+
