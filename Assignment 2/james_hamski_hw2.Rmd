@@ -8,19 +8,31 @@ output: html_document
 1. Page 69, #12
 *A company with a fleet of trucks faces increasing maintenance costs as the age and milage of the trucks increase.*
 
-Variables to study:
-*truck make / model
-*truck use
+Problem: are maintenance costs so high on older trucks that it makes sense to replace them with new ones at a certain age?
 
-Neglect:
-*routes
-*drivers 
+Variables to study and data to collect:  
+* truck make / model  
+* milage  
+* age of truck  
+* maintenance costs  
+* new truck costs  
 
-Constants:
+Neglect:  
+* routes  
+* drivers   
+* actual maintenance done    
 
-Data to collect
-*maintenance logs per truck
-*financal analysis of 
+Initial Constants:  
+*make/model, break into cohorts later on in analysis   
+  
+Submodels:  
+* association of age and milage  
+* association of maintenance costs and milage   
+
+  
+Data to collect:  
+* maintenance logs per truck  
+* financal analysis of     
 
 
 2.
@@ -116,5 +128,5 @@ See:
 http://newsroom.aaa.com/2013/06/what-is-the-difference-between-summer-and-winter-blend-gasoline/
 
 5. 
-
+To test the assumption of constant inner core density, you could take a sample of the targeted population and messure body fat percentage directly using calipers or electronic-resistance measurements, then compare these results to those given in the table. The difference between the two may be attributed to inner core density. However, in order to take care of confounding variables such as leg density, you would also need to take measurements of things like thigh circumfrence and waist circumfrence to check for their association with body fat percentage. 
 
