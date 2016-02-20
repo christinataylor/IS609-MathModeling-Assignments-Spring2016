@@ -15,10 +15,10 @@ library(ggplot2)
 
 
 ```{r}
-S <-c(5, seq(10, 100, 10))
+S <- c(5, seq(10, 100, 10))
 e <- c(0, 19, 57, 94, 134, 173, 216, 256, 297, 343, 390)
 
-qplot(x=S, y=e)
+qplot(x = S, y = e)
 ```
 
 Looks like a straight line. At about y = 100 it should be at about x = 30, so the slope linear model has a slope of about 3. 
@@ -40,5 +40,49 @@ problems.2.ls.builtin$residuals
 
 Graphing the output
 ```{r, message=F}
-qplot(x=x, y=y) + geom_abline(intercept=problems.2.ls.builtin$coefficients[1], slope=problems.2.ls.builtin$coefficients[2], color="blue") + ylim(c(0,8)) + xlim (c(0,8))
+qplot(x=x, y=y) + geom_abline(intercept=problems.2.ls.builtin$coefficients[1], slope=problems.2.ls.builtin$coefficients[2], color = "blue") + ylim(c(0,8)) + xlim (c(0,8))
 ```
+
+###3
+```{r}
+body <- c("Mercury", "Venus", "Earth", "Mars", 
+          "Jupiter", "Saturn", "Uranus", "Neptune")
+period <- c(7.6e6, 1.94e7, 3.16e7, 
+            5.94e7, 3.74e8, 9.35e8, 
+            2.64e9, 5.22e9)
+distance <- c(5.79e10, 1.08e11, 1.5e11, 
+              2.28e11, 7.79e11, 1.43e12, 
+              2.87e12, 4.5e12)
+planets <- data.frame(body, period, distance)
+```
+
+Fit the model: $y=ax^{\frac{3}{2}}$
+
+Which implies the Least Squares Criterion:
+$$a=\frac{\sum x_i^{\frac{3}{2}} y_i}{\sum x_i^{3}}$$
+
+```{r}
+
+planets.a <- function(x, y, n){
+  numerator <- sum((x ** n) * y)
+  denominator <- sum(x ** (2*n))
+  LS.planets <- numerator / denominator
+  return(LS.planets)}
+
+n = 3/2
+
+a <- planets.a(planets$period, planets$distance, n)
+
+planets.model <- function(a, x, n){
+  model.distance <- a * (x ** n)
+  return(model.distance)}
+
+modeled.distance <- planets.model(a, planets$period, n)
+
+planets.results <- cbind(planets, modeled.distance)
+```
+
+```{r}
+ggplot(planets.results, aes(x = period, y = distance)) + geom_point() + geom_line(aes(x = period, y = modeled.distance), color = "blue")
+```
+
