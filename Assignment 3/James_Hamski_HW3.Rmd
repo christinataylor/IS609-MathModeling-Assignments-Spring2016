@@ -1,0 +1,44 @@
+---
+title: "IS609 -Math Modeling - HW3"
+author: "J. Hamski"
+date: "February 17, 2016"
+output: html_document
+---
+
+*Packages Used*
+```{r}
+library(ggplot2)
+```
+
+
+###1
+
+
+```{r}
+S <-c(5, seq(10, 100, 10))
+e <- c(0, 19, 57, 94, 134, 173, 216, 256, 297, 343, 390)
+
+qplot(x=S, y=e)
+```
+
+Looks like a straight line. At about y = 100 it should be at about x = 30, so the slope linear model has a slope of about 3. 
+
+###2
+
+First, I'll use a script from IS605 to solve using the least squares method using linear algebra. 
+```{r}
+x <- c(1.0, 2.3, 3.7, 4.2, 6.1, 7.0)
+y <- c(3.6, 3.0, 3.2, 5.1, 5.3, 6.8)
+```
+
+Using built-in least squares
+```{r}
+problems.2.ls.builtin <- lsfit(x = x, y = y, intercept = T)
+problems.2.ls.builtin$coefficients
+problems.2.ls.builtin$residuals
+```
+
+Graphing the output
+```{r, message=F}
+qplot(x=x, y=y) + geom_abline(intercept=problems.2.ls.builtin$coefficients[1], slope=problems.2.ls.builtin$coefficients[2], color="blue") + ylim(c(0,8)) + xlim (c(0,8))
+```
