@@ -12,8 +12,6 @@ library(ggplot2)
 
 
 ###1
-
-
 ```{r}
 S <- c(5, seq(10, 100, 10))
 e <- c(0, 19, 57, 94, 134, 173, 216, 256, 297, 343, 390)
@@ -24,8 +22,6 @@ qplot(x = S, y = e)
 Looks like a straight line. At about y = 100 it should be at about x = 30, so the slope linear model has a slope of about 3. 
 
 ###2
-
-First, I'll use a script from IS605 to solve using the least squares method using linear algebra. 
 ```{r}
 x <- c(1.0, 2.3, 3.7, 4.2, 6.1, 7.0)
 y <- c(3.6, 3.0, 3.2, 5.1, 5.3, 6.8)
@@ -86,3 +82,227 @@ planets.results <- cbind(planets, modeled.distance)
 ggplot(planets.results, aes(x = period, y = distance)) + geom_point() + geom_line(aes(x = period, y = modeled.distance), color = "blue")
 ```
 
+###4
+```{r}
+len <- c(14.5, 12.5, 17.25, 14.5, 12.625, 17.75, 14.125, 12.625)
+
+wt <- c( 27, 17, 41, 26, 17, 49, 23, 16)
+
+fish <- as.data.frame(cbind(len, wt))
+```
+
+####A
+
+Fit the model: $wt = k\cdot len^3$
+
+```{r}
+LS <- function(x, y, n){
+  numerator <- sum((x ** n) * y)
+  denominator <- sum(x ** (2*n))
+  LS.result <- numerator / denominator
+  return(LS.result)}
+
+n = 3
+
+k <- LS(fish$len, fish$wt, n)
+
+fish.model <- function(k, x, n){
+  model.distance <- k * (x ** n)
+  return(model.distance)}
+
+modeled.wt <- fish.model(k, fish$len, n)
+
+fish.results <- cbind(fish, modeled.wt)
+```
+
+####B
+
+Fit the model: $wt = k \cdot l \cdot g^2$
+
+```{r}
+gr <- c(9.75, 8.3275, 11.0, 9.75, 8.5, 12.5, 9.0, 8.5)
+
+fish <- cbind(fish, gr)
+```
+
+```{r}
+LS.2 <- function(x, y, z, n){
+  numerator <- sum((x ** n) * z * y)
+  denominator <- sum(x ** (2*n))
+  LS.result <- numerator / denominator
+  return(LS.result)}
+
+n.2 = 2
+
+k <- LS.2(fish$len, fish$wt, fish$gr, n.2)
+
+fish.model <- function(k, x, z, n){
+  model.distance <- z * k * (x ** n)
+  return(model.distance)}
+
+modeled.wt.2 <- fish.model(k, fish$len, fish$gr, n)
+
+fish.results <- cbind(fish.results, modeled.wt.2)
+```
+
+
+```{r}
+fish.deviations.1 <- fish.results$wt - fish.results$modeled.wt
+
+(D.max <- max(abs(fish.deviations.1)))
+(D.min <- sqrt(sum(fish.deviations.1**2)/length(fish.deviations.1)))
+```
+
+$$D = 1.233306 \leq c_{max} \leq 2.305497 = d_{max}$$
+
+
+
+
+```{r}
+ggplot(fish.results, aes(x = len, y = wt)) + geom_point() + geom_line(aes(x = len, y = modeled.wt), color = "blue") + labs(title = "Modeling Fish Weight using Length and Girth")
+```
+
+###5
+```{r}
+lifepace <- read.csv("lifepace.csv", header = T)
+
+lifepace$logp <- log(lifepace$Population)
+lifepace$logv <- log(lifepace$Velocity)
+
+qplot(x = lifepace$logp, y = lifepace$logv) + geom_smooth(method = "lm", se = F)
+(pacemodel.1 <- lm(logv ~ logp, data = lifepace))
+```
+
+$$\log V = 0.145 + 0.096 \log P$$
+
+$$V = 2.14 P^{0.096}$$
+
+```{r}
+pace.model <- function(P){pace.model.result <- 1.396*(P ** 0.096)}
+
+lifepace$VelocityModel <- pace.model(lifepace$Population)
+```
+
+```{r}
+(plot5.1 <- ggplot(lifepace, aes(x = Population, y = Velocity)) + geom_point() + geom_line(aes(x = Population, y = VelocityModel), color = "blue"))
+```
+
+The mean of the Bornstein errors is low, suggesting this is a good model. 
+```{r}
+(b.errors <- mean(lifepace$Velocity - lifepace$VelocityModel))
+```
+
+```{r}
+qplot(x = lifepace$logp, y = lifepace$Velocity) + geom_smooth(method = "lm", se = F)
+```
+
+```{r}
+(pacemodel.1 <- lm(Velocity ~ logp, data = lifepace))
+```
+
+```{r}
+pace.model.2 <- function(P){pace.model.result <- 0.37397*log(P)+0.04042}
+
+lifepace$VelocityModel2 <- pace.model.2(lifepace$Population)
+```
+
+The mean of the Bornstein errors is even lower, suggesting this is an even better model!
+```{r}
+(b.errors <- mean(lifepace$Velocity - lifepace$VelocityModel2))
+```
+
+```{r}
+(plot5.1 + geom_line(data = lifepace, aes(x = Population, y = VelocityModel2), color = "red"))
+```
+
+
+###6
+
+```{r}
+pine <- read.csv("pine.csv", header = T)
+
+ggplot(pine, aes(x=X, y=Y))+ geom_point() + stat_smooth(method = "lm", formula = y ~ poly(x, 13), size = 1)
+```
+
+This is not a good model for ponderosa pine diameter and volume. The severe oscillation does not match the real world phenomenon - jumping just a few inches in diameter will not change the volume orders of magnitude in any direction. Also, a negative volume is given by the model, which voilates the laws of tree-physics. The 13th order polynomial is an overfitted model. 
+
+###7
+
+```{r}
+len <- c(12.5, 12.625, 14.125, 14.5, 17.25, 17.75)
+wt <- c(17, 16.5, 23, 26.5, 41, 49)
+bass <- as.data.frame(cbind(len, wt))
+```
+
+```{r}
+qplot(x=len, y=wt)
+```
+
+There appears to be a positive correlation between Bass length and weight. There does not appear to be any outliers in the data. 
+
+```{r}
+a.1 <- (bass[2,2]-bass[1,2]) / (bass[2,1] - bass[1,1])
+a.2 <- (bass[3,2]-bass[2,2]) / (bass[3,1] - bass[2,1])
+a.3 <- (bass[4,2]-bass[3,2]) / (bass[4,1] - bass[3,1])
+a.4 <- (bass[5,2]-bass[4,2]) / (bass[5,1] - bass[4,1])
+a.5 <- (bass[6,2]-bass[5,2]) / (bass[6,1] - bass[5,1])
+
+div.diff <- rbind(a.1, a.2, a.3, a.4, a.5)
+div.diff <- as.data.frame(div.diff)
+
+b.1 <- (a.2 -a.1) / (bass[3,1] - bass[1,1])
+b.2 <- (a.3 -a.2) / (bass[4,1] - bass[2,1])
+b.3 <- (a.4 -a.3) / (bass[5,1] - bass[3,1])
+b.4 <- (a.5 -a.4) / (bass[6,1] - bass[4,1])
+
+b <- rbind(NA, b.1, b.2, b.3, b.4)
+div.diff <- cbind(div.diff, b)
+
+c.1 <- (b.2 - b.1) / bass[4,1] - bass[1,1]
+c.2 <- (b.3 - b.2) / bass[5,1] - bass[2,1]
+c.3 <- (b.4 - b.3) / bass[6,1] - bass[3,1]
+
+c <- rbind(NA, c.1, c.2, c.3, NA)
+div.diff <- cbind(div.diff, c)
+
+d.1 <- (c.2 - c.1) / bass[5,1] - bass[1,1]
+d.2 <- (c.3 - c.2) / bass[6,1] - bass[2,1]
+
+d <- rbind(NA, NA, d.1, d.2, NA)
+div.diff <- cbind(div.diff, d)
+
+e.1 <- (d.2 - d.1) / bass[6,1] - bass[1,1]
+
+e <- rbind(NA, NA, e.1, NA, NA)
+div.diff <- cbind(div.diff, e)
+div.diff
+```
+*1st degree*
+```{r}
+f1.s <- summary(fit.1 <- lm(wt ~ len, data = bass))
+(sum(sqrt(f1.s$residuals**2)))
+```
+
+```{r}
+ggplot(bass, aes(x=len, y=wt))+ geom_point() + stat_smooth(method = "lm", formula = y ~ poly(x, 1, raw=T), size = 1, color = "yellow")
+```
+
+*2nd degree*
+```{r}
+f2.s <- summary(fit.2 <- lm(wt ~ poly(len, 2, raw=T), data = bass))
+(sum(sqrt(f2.s$residuals**2)))
+```
+
+```{r}
+ggplot(bass, aes(x=len, y=wt))+ geom_point() + stat_smooth(method = "lm", formula = y ~ poly(x, 2, raw=T), size = 1, color = "blue")
+```
+
+*3rd degree*
+```{r}
+f3.s <- summary(fit.3 <- lm(wt ~ poly(len, 3, raw=T), data = bass))
+(sum(sqrt(f3.s$residuals**2)))
+```
+
+```{r}
+ggplot(bass, aes(x=len, y=wt))+ geom_point() + stat_smooth(method = "lm", formula = y ~ poly(x, 3, raw=T), size = 1, color = "red")
+```
