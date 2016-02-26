@@ -1,0 +1,26 @@
+---
+title: "IS609 -Math Modeling - HW4"
+author: "J. Hamski"
+date: "February 25, 2016"
+output: html_document
+---
+
+*Packages Used*
+```{r}
+library(ggplot2)
+```
+
+###1
+
+
+###2
+
+
+###3
+
+
+###4
+
+
+###5
+
