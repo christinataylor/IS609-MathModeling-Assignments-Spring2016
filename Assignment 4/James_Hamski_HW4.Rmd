@@ -12,8 +12,51 @@ library(ggplot2)
 
 ###1
 
+```{r}
+quarter.circle <- function(){
+  x <- runif(1, 0.0, 1.0)
+  y <- runif(1, 0.0, 1.0)
+  Q <- 1 > x**2 + y**2
+  return(Q)}
+
+iter <- 10000
+
+circle.inout <- replicate(iter, quarter.circle())
+
+circle.out <- sum(circle.inout, na.rm=TRUE)
+
+pi.estimate <- circle.out / iter * 4
+
+pi.estimate
+```
 
 ###2
+
+This would have been simpler in Python where I could treat intege
+```{r}
+middle.sq <- function(seed){
+  square <- seed ** 2
+  square.len <- nchar(square, type="chars")
+  square <- toString(square)
+  square <-ifelse(square.len %%2 == 0, square, paste("0", square, sep = ""))
+  square.len <- nchar(square, type="chars")
+  start <- (square.len / 2) - 1
+  stop <- start + 3
+  next.num <- substr(square, start, stop)
+  next.num <- as.numeric(next.num)
+  return(next.num)
+}
+
+# I always have a hard time doing recursive functions in R...
+
+seed = 2041
+for (i in 1:12){
+  new <- middle.sq(seed[i])
+  seed <- c(seed, new)
+}
+
+
+```
 
 
 ###3
