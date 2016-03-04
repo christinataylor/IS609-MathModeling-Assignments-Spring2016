@@ -116,6 +116,8 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(knitr)</code></pre>
+<div id="problem-1" class="section level3">
+<h3>Problem 1</h3>
 <table>
 <thead>
 <tr class="header">
@@ -145,6 +147,7 @@ $(document).ready(function () {
   return(mat.result)
 }
 
+#Starting with 100% of the students going to Grease Dining Hall
 dining.behavior &lt;- matrix(data = c(1,0), nrow = 1, ncol = 2)
 iters &lt;- 10
 
@@ -222,6 +225,43 @@ kable(dining.behavior)</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<p><em>Subsystem 1</em></p>
+<pre class="r"><code>pwr &lt;- 0.996
+PC.unit &lt;- 0.999
+
+ss.1 &lt;- pwr * PC.unit</code></pre>
+<p><em>Subsystem 2</em></p>
+<pre class="r"><code># a far more reliable keyboard than I've ever used...
+keyboard &lt;- 0.9999
+mouse &lt;- 0.9998
+
+ss.2 &lt;- keyboard + mouse - (keyboard * mouse)</code></pre>
+<p><em>Subsystem 3</em></p>
+<pre class="r"><code>floppy.a &lt;- 0.995
+HD &lt;- 0.995
+CD &lt;- 0.999
+
+ss.3 &lt;- 1-((1 - floppy.a) * (1 - HD) * (1 - CD))</code></pre>
+<p><em>Subsystem 4</em></p>
+<pre class="r"><code>printer &lt;- 0.995
+color.laser &lt;- 0.999
+
+ss.4 &lt;- printer + color.laser - (printer * color.laser)</code></pre>
+<p><em>Total System Reliability</em></p>
+<pre class="r"><code>system &lt;- ss.1 * ss.2 * ss.3 * ss.4
+system</code></pre>
+<pre><code>## [1] 0.994999</code></pre>
+<p>A good primer on this topic: <a href="https://src.alionscience.com/pdf/S&amp;PSYSREL.pdf" class="uri">https://src.alionscience.com/pdf/S&amp;PSYSREL.pdf</a></p>
+</div>
+<div id="problem-3" class="section level3">
+<h3>Problem 3</h3>
+</div>
+<div id="problem-4" class="section level3">
+<h3>Problem 4</h3>
+</div>
 
 
 

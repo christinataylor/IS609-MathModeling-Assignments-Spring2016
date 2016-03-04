@@ -9,7 +9,7 @@ output: html_document
 library(knitr)
 ```
 
-
+### Problem 1
  _  | grease | sweet
 ------|--------|------
 grease | 0.25     | 0.75
@@ -27,6 +27,7 @@ dining.model <- function(gs){
   return(mat.result)
 }
 
+#Starting with 100% of the students going to Grease Dining Hall
 dining.behavior <- matrix(data = c(1,0), nrow = 1, ncol = 2)
 iters <- 10
 
@@ -38,5 +39,67 @@ dining.behavior <- as.data.frame(cbind(0:iters, dining.behavior))
 colnames(dining.behavior) <- c("Step", "Grease", "Sweet")
 
 kable(dining.behavior)
+```
+
+
+### Problem 2
+
+*Subsystem 1*
+
+```{r}
+pwr <- 0.996
+PC.unit <- 0.999
+
+ss.1 <- pwr * PC.unit
+```
+
+*Subsystem 2*
+
+```{r}
+# a far more reliable keyboard than I've ever used...
+keyboard <- 0.9999
+mouse <- 0.9998
+
+ss.2 <- keyboard + mouse - (keyboard * mouse)
+```
+
+*Subsystem 3*
+
+```{r}
+floppy.a <- 0.995
+HD <- 0.995
+CD <- 0.999
+
+ss.3 <- 1-((1 - floppy.a) * (1 - HD) * (1 - CD))
+```
+
+*Subsystem 4*
+
+```{r}
+printer <- 0.995
+color.laser <- 0.999
+
+ss.4 <- printer + color.laser - (printer * color.laser)
+```
+
+*Total System Reliability*
+
+```{r}
+system <- ss.1 * ss.2 * ss.3 * ss.4
+system
+```
+
+A good primer on this topic: https://src.alionscience.com/pdf/S&PSYSREL.pdf
+
+### Problem 3
+
+```{r}
+
+```
+
+### Problem 4
+
+```{r}
+
 ```
 
