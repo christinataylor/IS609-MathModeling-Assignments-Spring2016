@@ -1,0 +1,42 @@
+---
+title: "IS609 - Assignment 5"
+author: "J. Hamski"
+date: "March 3, 2016"
+output: html_document
+---
+
+```{r}
+library(knitr)
+```
+
+
+ _  | grease | sweet
+------|--------|------
+grease | 0.25     | 0.75
+sweet | 0.07      | 0.93
+
+$$g_{n+1} = 0.25g_{n} + 0.07s_{n}$$
+$$2_{n+1} = 0.93s_{n} + 0.75s_{n} $$
+
+```{r}
+
+dining.model <- function(gs){
+  mat.result <- matrix(data = c(0, 0), nrow = 1, ncol = 2)
+  mat.result[1] <- 0.25*gs[1] + 0.07*gs[2]
+  mat.result[2] <- 0.93*gs[2] + 0.75*gs[1]
+  return(mat.result)
+}
+
+dining.behavior <- matrix(data = c(1,0), nrow = 1, ncol = 2)
+iters <- 10
+
+for(i in 1:iters) {
+ dining.behavior <- rbind(dining.behavior, dining.model(dining.behavior[i,]))}
+
+dining.behavior <- as.data.frame(cbind(0:iters, dining.behavior))
+
+colnames(dining.behavior) <- c("Step", "Grease", "Sweet")
+
+kable(dining.behavior)
+```
+

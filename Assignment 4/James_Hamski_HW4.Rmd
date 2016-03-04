@@ -40,9 +40,13 @@ middle.sq <- function(seed){
   square.len <- nchar(square, type="chars")
   square <- toString(square)
   square <-ifelse(square.len %%2 == 0, square, paste("0", square, sep = ""))
+  
   square.len <- nchar(square, type="chars")
+  seed.len <- nchar(seed, type = "chars")
+  
   start <- (square.len / 2) - 1
-  stop <- start + 3
+  stop <- (square.len) / 2 + 1
+  
   next.num <- substr(square, start, stop)
   next.num <- as.numeric(next.num)
   return(next.num)
@@ -58,6 +62,40 @@ for (i in 1:12){
 
 
 ```
+
+```{r}
+#a
+seed = 1009
+for (i in 1:12){
+  new <- middle.sq(seed[i])
+  seed <- c(seed, new)
+}
+seed
+```
+
+
+```{r}
+#b
+seed = 653217
+for (i in 1:12){
+  new <- middle.sq(seed[i])
+  seed <- c(seed, new)
+}
+seed
+```
+
+
+```{r}
+#c
+seed = 3043
+for (i in 1:12){
+  new <- middle.sq(seed[i])
+  seed <- c(seed, new)
+}
+
+seed
+```
+
 
 
 ###3
@@ -100,4 +138,9 @@ kable(lag.results)
 
 
 ###5
+```{r}
+
+
+
+```
 
