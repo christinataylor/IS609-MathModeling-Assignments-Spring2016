@@ -5,8 +5,9 @@ date: "March 3, 2016"
 output: html_document
 ---
 
-```{r}
+```{r, warning=FALSE}
 library(knitr)
+library(ggplot2)
 ```
 
 ### Problem 1
@@ -94,12 +95,136 @@ A good primer on this topic: https://src.alionscience.com/pdf/S&PSYSREL.pdf
 ### Problem 3
 
 ```{r}
-
+height <- 60:80
+weight <- c(132, 136, 141, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 201, 206, 212, 218, 223, 229, 234)
+plot(x = height, y = weight)
 ```
+
+*Slope*
+```{r}
+m <- length(height)
+slope.num <- m * sum(height * weight) - (sum(height) * sum(weight))
+slope.den <- m * sum(height ** 2) - sum(height) ** 2
+
+slope = slope.num / slope.den
+slope
+```
+
+*Intercept*
+```{r}
+intercept.num <- (sum(height **2)  * sum(weight)) - (sum(height * weight) * sum(height))
+intercept.den <- m* sum(height **2) - sum(height) ** 2
+intercept <- intercept.num / intercept.den
+intercept
+```
+
+$weight = -178.49 + 5.13636height$
+
+```{r}
+HW.data <- as.data.frame(cbind(height, weight))
+
+ggplot(HW.data, aes(x = height, y = weight)) + geom_point() + geom_abline(intercept = intercept, slope = slope)
+```
+
+SSE
+```{r}
+sse <- sum(weight - (slope * height + intercept)) ** 2
+sse
+```
+
+SST
+```{r}
+mean.weight <- mean(weight)
+
+sst <- sum((weight - mean.weight) ** 2)
+sst
+```
+
+SSR
+```{r}
+ssr <- sst - sse
+ssr
+```
+
+Coefficient of Determination 
+```{r}
+r2 <- 1 - (sse / sst)
+r2
+```
+
+Residuals
+```{r}
+residuals <- weight - (slope * height + intercept)
+
+plot(x = 1:21, y = residuals)
+```
+
+These residuls follow a strange angled pattern. This indicates a poorly fitting model. 
 
 ### Problem 4
 
-```{r}
 
+```{r}
+height.cubed <- height ** 2
 ```
 
+*Slope*
+```{r}
+m <- length(height.cubed)
+slope.num <- m * sum(height.cubed * weight) - (sum(height.cubed) * sum(weight))
+slope.den <- m * sum(height.cubed ** 2) - sum(height.cubed) ** 2
+
+slope = slope.num / slope.den
+slope
+```
+
+*Intercept*
+```{r}
+intercept.num <- (sum(height.cubed **2)  * sum(weight)) - (sum(height.cubed * weight) * sum(height.cubed))
+intercept.den <- m* sum(height.cubed **2) - sum(height.cubed) ** 2
+intercept <- intercept.num / intercept.den
+intercept
+```
+
+$weight = -0.03484824 + 0.03668112height^2$
+
+```{r}
+HW.data <- as.data.frame(cbind(height.cubed, weight))
+
+ggplot(HW.data, aes(x = height.cubed, y = weight)) + geom_point() + geom_abline(intercept = intercept, slope = slope)
+```
+
+SSE
+```{r}
+sse <- sum(weight - (slope * (height **2) + intercept)) ** 2
+sse
+```
+
+SST
+```{r}
+mean.weight <- mean(weight)
+
+sst <- sum((weight - mean.weight) ** 2)
+sst
+```
+
+SSR
+```{r}
+ssr <- sst - sse
+ssr
+```
+
+Coefficient of Determination 
+```{r}
+r2 <- 1 - (sse / sst)
+r2
+```
+
+Residuals
+```{r}
+residuals <- weight - (slope * (height **2) + intercept)
+
+plot(x = 1:21, y = residuals)
+```
+
+The residuals are more random. This indicates a better model than in the previous question. 
