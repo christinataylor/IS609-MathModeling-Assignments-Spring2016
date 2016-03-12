@@ -1,0 +1,39 @@
+---
+title: 'IS 609 - Homework #6'
+author: "J. Hamski"
+date: "March 10, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+###1
+
+
+
+Minimize: $cost(h, t, b, p) = 1.8h + 3.5t + 0.4b + 1.0p$
+
+Subject to:
+
+$0.5h + t + 2.0b + 6.0p \geq 40.0$
+
+$2.0h + 4.0t + 0.5b + p \geq 20.0$
+
+$5.0h + 2.0t + b + 2.5p \geq 25.0$
+
+$h, t, b, p >=0$
+
+
+###2
+
+Using Desmos: ![](7_2_6.png)
+
+Extreme points and their objective function value:   
+x = 0, y = 8 -> **280**   
+x = 0, y = 5 -> 175  
+x = 2.25, y = 5 -> 197.50  
+
+280 is the maximum value
