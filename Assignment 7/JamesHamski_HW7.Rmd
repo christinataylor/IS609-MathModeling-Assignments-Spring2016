@@ -1,0 +1,45 @@
+---
+title: "IS609 HW7"
+author: "J. Hamski"
+date: "March 16, 2016"
+output: html_document
+---
+
+###1
+
+a. deg(G) = 9, which is odd. G is not Eulerian - you cannot traverse each edge exactly once and arrive at the vertex you originated from. In order to traverse each edge from a vertex and arrive back at it, you must go 'out and back' which implies 2 edges. Therefore, over the whole graph in order to go 'out and back' in any order there must be an even number of edges. 
+
+b. Yes, via the following route (one of several):
+5-3
+3-1
+1-2
+2-3
+3-4
+4-5
+5-6
+6-4
+4-2
+
+The necissary condition to have a walk that traverses all edges once but doesn't necissarily wind up in the same location is:
+- have no more than one vertex with only one edge
+- have no adjacent vertices with odd numbers of connections - evens can be adjacent to evens or odds, odds must be adjacent to evens. 
+
+...there may be more, but these are what I found. 
+
+###2
+
+a. E(G) = {ab, ae, af, bd, bc, cd, df, de, ef}
+b. {ab, bd, bc}
+c. {b, d}
+d. deg(a) = 3
+e. |E(G)| = 9
+
+I noticed that once you solved (a), you no longer need to refer to the drawn graph. All information is encapulated in the set describing the edges! It even becomes apparent how you could solve them algorithmically by iterating over the set E(G). 
+
+###3
+
+
+
+
+
+###3
