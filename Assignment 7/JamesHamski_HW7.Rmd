@@ -38,8 +38,8 @@ I noticed that once you solved (a), you no longer need to refer to the drawn gra
 
 ###3
 
+![](8.3.10.png)
 
+The team has a shallow bench at power forward (3), small forward (4), and center (5). So, if Hermione doesn't cover power forward, Deb and Gladys are the only ones left to cover the three 'big' positions of 3, 4, and 5, hence they cannot field a complete team. 
 
-
-
-###3
+###4
