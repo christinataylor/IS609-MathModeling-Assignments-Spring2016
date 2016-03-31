@@ -1,0 +1,31 @@
+---
+title: 'IS609 Assignment #9'
+author: "J. Hamski"
+date: "March 29, 2016"
+output: html_document
+---
+
+###1
+
+Rose chooses R1 every time. 
+Colin chooses C2 or C2. 
+
+The game equilibrium equals 10. However, it is not a pure strategy Nash Equilibrium since Colin can choose either C2 or C3 and get the same result. 
+
+###2
+
+Pitcher chooses knuckleball every time, it is a dominant strategy. 
+The Batter must subsequently quess knuckleball each time.
+
+The pure strategy Nash equilibrium equals 0.250. 
+
+###3
+
+
+
+###4
+
+
+
+###5
+
