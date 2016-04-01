@@ -20,6 +20,11 @@ The Batter must subsequently quess knuckleball each time.
 The pure strategy Nash equilibrium equals 0.250. 
 
 ###3
+Linear Program for Rose
+![Linear Program for Rose](10.2.2a.png)
+
+Linear Program for Colin
+![Linear Program for Colin](10.2.2b.png)
 
 
 
