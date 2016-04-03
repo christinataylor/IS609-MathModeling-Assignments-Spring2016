@@ -30,7 +30,42 @@ Linear Program for Colin
 
 ###4
 
+```{r}
+library(lpSolve)
+```
+
+
+```{r}
+payoff.matrix <- as.matrix(rbind(
+  c(3000, 4500, 6000),
+  c(1000, 9000, 2000),
+  c(4500, 4000, 3500)))
+```
 
 
 ###5
+
+Maximin = 20, Minimax = 15, therefore no pure strategy staddle point exists. 
+
+Colin plays C1 or C2
+Rose plays R1
+Game value: 10
+
+###6
+
+a. equating expected value
+
+First, check for pure strategy saddle point:
+![check for pure strategy saddle point](10.5.3a.png)
+One exists at C1, R2 and equals 0.6. 
+
+![](10.5.3b.png)
+
+b. mothods of oddments
+
+This method cannot be used due to the saddle point. 
+
+###7
+
+
 
