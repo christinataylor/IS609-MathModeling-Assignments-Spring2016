@@ -15,7 +15,7 @@ The game equilibrium equals 10. However, it is not a pure strategy Nash Equilibr
 ###2
 
 Pitcher chooses knuckleball every time, it is a dominant strategy. 
-The Batter must subsequently quess knuckleball each time.
+The Batter must subsequently guess knuckleball each time.
 
 The pure strategy Nash equilibrium equals 0.250. 
 
@@ -55,17 +55,26 @@ Game value: 10
 
 a. equating expected value
 
-First, check for pure strategy saddle point:
-![check for pure strategy saddle point](10.5.3a.png)
+First, check for pure strategy saddle point:  
+![check for pure strategy saddle point](10.5.3a.png)  
 One exists at C1, R2 and equals 0.6. 
 
 ![](10.5.3b.png)
 
-b. mothods of oddments
+b. methods of oddments
 
 This method cannot be used due to the saddle point. 
 
 ###7
+![](10.6.2a.png)
 
+If both players maximize strategy, the likely outcome is (2,4).  
 
+![](10.6.2b.png)
+
+###8
+
+![](10.7.3.png)
+
+The most likely outcome is for both players to try from long range on their first shot, with an expected value of -2 for Doc Holiday since he's the worse long-range shot. 
 
