@@ -1,0 +1,50 @@
+---
+title: "IS609-Assignment 10"
+author: "James Hamski"
+date: "April 10, 2016"
+output: html_document
+---
+###1
+```{r}
+t <- c(1814, 1824, 1834, 1844, 1854, 1864)
+P.t <- c(125, 275, 830, 1200, 1750, 1650)
+
+plot(x = t, y = P.t)
+```
+
+M is approximately 1900.
+
+```{r}
+M <- 1900
+P.ln <- NULL
+for(i in P.t){
+  p.func <- log(i / (M - i))
+  P.ln <- c(P.ln, p.func)
+}
+```
+
+```{r}
+plot(x = t, y = P.ln)
+abline(lm(P.ln ~ t))
+```
+
+```{r}
+t.adjusted <- t - 1814
+
+model.coeff <- lm(P.ln ~ t.adjusted )$coefficients
+(C <- model.coeff[1])
+(rM <- model.coeff[2])
+```
+
+```{r}
+(t.half <- 1814 + (-(C / rM)))
+```
+
+```{r}
+plot(y = P.t, x = t)
+abline(v = t.half)
+```
+
+###2
+Suggest another phenomenon this model could be applied to:
+This model could be used for the releases of water from a dam if there is a desire for varied, occasonally high flows. This is common in places where whitewater rafting is popular. The total amount of water released would be the area under the curve. The 'dosage' would be the amount of water released. The residual would be important because if the amount of water released downstream exceeds the capacity of the river banks, flooding would occur. 
